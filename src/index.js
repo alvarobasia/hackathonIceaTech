@@ -1,4 +1,5 @@
 const fetch = require("node-fetch")
+var fs = require('fs')
 let offset = 0
 let perPage = 0
 let results = []
@@ -7,7 +8,11 @@ let dados = {
     fidelizado: [],
     naoFidelizado: []
 }
+
 let campos = [ids, dados]
+let objeto = {
+    data: campos
+}
 
 
 
@@ -106,7 +111,7 @@ const calculos = function(data, posicao) {
 
 }
 negocios = []
-fetch(`https://hackaengine-dot-red-equinox-253000.appspot.com/sales?offset=0&per_page=200`)
+/*fetch(`https://hackaengine-dot-red-equinox-253000.appspot.com/sales?offset=0&per_page=200`)
         .then((data) => {
             return data.json()
         })
@@ -213,10 +218,10 @@ setTimeout(() => {
                 data.mediaConsumo = 0
         })
     })
-    Object.values(campos[1]).forEach((campo) => {
-        campo.forEach((data) => console.log(data))
-    })
-}, 40000)
+    var json = JSON.stringify(objeto);
+    fs.writeFile('myjsonfile.json', json, 'utf8', () => console.log("Certinho"));
+}, 60000)
+*/
 
 
 
