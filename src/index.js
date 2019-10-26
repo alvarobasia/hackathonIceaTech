@@ -1,4 +1,5 @@
 const fetch = require("node-fetch")
+var fs = require('fs')
 let offset = 0
 let perPage = 0
 let results = []
@@ -7,7 +8,11 @@ let dados = {
     fidelizado: [],
     naoFidelizado: []
 }
+
 let campos = [ids, dados]
+let objeto = {
+    data: campos
+}
 
 
 
@@ -31,11 +36,12 @@ function dateToMili(date) {
     return date.day * 86400000 + date.hours * 3600000 + date.minutes * 60000
 }
 
-function ConstructorId(id, gender, age) {
+function ConstructorId(id, gender, age, sex) {
     return {
         id,
         gender,
-        age
+        age,
+        sex
     }
 }
 
@@ -72,7 +78,7 @@ function encontraNoArray(arr, obj) {
 const calculos = function(data, posicao) {
     let a = encontraNoArray(campos[0], data.cliente.id)
     if(a == -1) {
-        campos[0].push(ConstructorId(data.cliente.id, data.cliente.data.sex, data.cliente.data.age))
+        campos[0].push(ConstructorId(data.cliente.id, data.cliente.data.sex, data.cliente.data.age, data.cliente.data.sex))
         if(data.points > 0) {
             campos[1].fidelizado.push(new Construtor([ConstructorDate(data.date.dia, data.date.hora, data.date.minuto)],
             posicao,[data.products[0].data.pricePerUnit * data.quantity, 1],[data.quantity, 1]))
@@ -106,7 +112,7 @@ const calculos = function(data, posicao) {
 
 }
 negocios = []
-fetch(`https://hackaengine-dot-red-equinox-253000.appspot.com/sales?offset=0&per_page=200`)
+/*fetch(`https://hackaengine-dot-red-equinox-253000.appspot.com/sales?offset=0&per_page=200`)
         .then((data) => {
             return data.json()
         })
@@ -213,10 +219,10 @@ setTimeout(() => {
                 data.mediaConsumo = 0
         })
     })
-    Object.values(campos[1]).forEach((campo) => {
-        campo.forEach((data) => console.log(data))
-    })
-}, 40000)
+    var json = JSON.stringify(objeto);
+    fs.writeFile('myjsonfile.json', json, 'utf8', () => console.log("Certinho"));
+}, 60000)
+*/
 
 
 
