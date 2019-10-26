@@ -27,7 +27,14 @@ background-attachment: fixed;
 .main{
 color: #fff;
 	font-family: 'Nunito', sans-serif;	
+	width:490px;
 }
+.mainn{
+color: #fff;
+	font-family: 'Nunito', sans-serif;	
+	margin: 0px 10px;
+}
+
 
 .text{
 font-family: 'Ubuntu', sans-serif;
@@ -148,4 +155,8 @@ display:none;
 border:1px solid #c0c0c0; 
 display:block; 
 width:150px;
+}
+.font{
+	font-size:30px;
+
 }
