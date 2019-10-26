@@ -157,6 +157,10 @@ display:block;
 width:150px;
 }
 .font{
-	font-size:30px;
-
+	font-size:37px;
+	color: blue;
+	font-family: 'Nunito', sans-serif;
+	text-shadow: 1px 1px 3px black;
+	padding-left: 10px;
+	padding-top: 10px;
 }
