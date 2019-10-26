@@ -1,4 +1,4 @@
-const fetch = require("node-fetch")
+/*const fetch = require("node-fetch")
 let offset = 0
 let perPage = 0
 let results = []
@@ -158,4 +158,13 @@ media de gasto
 media de consumo
 13 ao 20 nao tem venda fidelizada
 */
+function subtractDates(d1, d2) {
+    let a = new Date(2019, 5, d2.day, d2.hours, d2.minutes)
+    let b = new Date(2019, 5, d1.day, d1.hours, d1.minuts)
+    let c = Math.abs(a.getTime() - b.getTime())
+    let result = Math.ceil(c / (1000 * 60 * 60 * 24))
+    let d = Math.abs(a.getMinutes() - b.getMinutes())
+    let g = Math.abs(a.getHours() - b.getHours())
+    return ConstructorDate(result,g,d)
+}
 
