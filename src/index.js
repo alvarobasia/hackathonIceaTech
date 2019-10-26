@@ -1,4 +1,4 @@
-/*const fetch = require("node-fetch")
+const fetch = require("node-fetch")
 let offset = 0
 let perPage = 0
 let results = []
@@ -9,6 +9,20 @@ let dados = {
 }
 let campos = [ids, dados]
 
+function ConstructorDate(day, hours, minutes) {
+    return {
+        day, hours, minutes
+    }
+}
+
+function ConstructorId(id, gender, age) {
+    return {
+        id,
+        gender,
+        age
+    }
+}
+
 function Construtor(mediaRec, pos, mediaGasto, mediaConsumo) {
     return {
         mediaRec,
@@ -18,30 +32,42 @@ function Construtor(mediaRec, pos, mediaGasto, mediaConsumo) {
     }
 }
 
+function miliToDate(time) {
+    let remaining = time
+    let day = Math.trunc(time/86400000)
+    remaining -= time % 86400000
+    let hour = Math.trunc(time/3600000)
+    remaining -= time % 3600000
+    let minutes = Math.trunc(time/60000)
+    return ConstrutorDate(day, hour, minutes)
+}
+
 const calculos = function(data, posicao) {
     let a = campos[0].indexOf(data.cliente.id)
     if(a == -1) {
-        campos[0].push(data.cliente.id)
+        campos[0].push(ConstructorId(data.cliente.id, data.cliente.data.sex, data.cliente.data.age))
         if(data.points > 0) {
-            campos[1].fidelizado.push(new Construtor([[data.date.dia, data.date.mes]],posicao,[data.price, 1],[data.quantity, 1]))
+            campos[1].fidelizado.push(new Construtor([ConstructorDate(data.date.dia, data.date.hora, data.date.minuto)],
+            posicao,[data.products[0].data.pricePerUnit * data.quantity, 1],[data.quantity, 1]))
             campos[1].naoFidelizado.push(new Construtor([], posicao, [0, 0], [0, 0]))
         }
         else {
             campos[1].fidelizado.push(new Construtor([], posicao, [0, 0], [0, 0]))
-            campos[1].naoFidelizado.push(new Construtor([[data.date.dia, data.date.mes]],posicao,[data.price, 1],[data.quantity, 1]))
+            campos[1].naoFidelizado.push(new Construtor([ConstructorDate(data.date.dia, data.date.hora, data.date.minuto)],
+            posicao,[data.products[0].data.pricePerUnit * data.quantity, 1], [data.quantity, 1]))
         }    
     }
     else {
         if(data.points > 0) {
             campos[1].fidelizado[a].mediaRec.push([data.date.dia, data.date.mes])
-            campos[1].fidelizado[a].mediaGasto[0] += data.price
+            campos[1].fidelizado[a].mediaGasto[0] += data.products[0].data.pricePerUnit * data.quantity
             campos[1].fidelizado[a].mediaGasto[1]++
             campos[1].fidelizado[a].mediaConsumo[0] += data.quantity
             campos[1].fidelizado[a].mediaConsumo[1]++
         }
         else {
             campos[1].naoFidelizado[a].mediaRec.push([data.date.dia, data.date.mes])
-            campos[1].naoFidelizado[a].mediaGasto[0] += data.price
+            campos[1].naoFidelizado[a].mediaGasto[0] += data.products[0].data.pricePerUnit * data.quantity
             campos[1].naoFidelizado[a].mediaGasto[1]++
             campos[1].naoFidelizado[a].mediaConsumo[0] += data.quantity
             campos[1].naoFidelizado[a].mediaConsumo[1]++
@@ -107,7 +133,7 @@ fetch(`https://hackaengine-dot-red-equinox-253000.appspot.com/sales?offset=1200&
 setTimeout(() => {
     offset = 0
     soma = 0
-for(n of negocios) {
+for(let n of negocios) {
     i = 0
     n.forEach((data) => {
         calculos(data, offset + i)
@@ -158,6 +184,7 @@ media de gasto
 media de consumo
 13 ao 20 nao tem venda fidelizada
 */
+
 function subtractDates(d1, d2) {
     let a = new Date(2019, 5, d2.day, d2.hours, d2.minutes)
     let b = new Date(2019, 5, d1.day, d1.hours, d1.minuts)
